@@ -54,14 +54,9 @@ static int find_stylus(Display *display, int deviceid)
 
         for(i = 0; i < ndevices; i++) {
                 dev = &info[i];
-
-                word = strtok (dev->name," ");
-                while (1) {
-                        word = strtok (NULL, " ");
-                        if (!word)
-				break;
-				if (strcmp("stylus", word) == 0)
-				stylus = dev->deviceid;
+                if(strstr(dev->name, "stylus") != NULL) {
+				    stylus = dev->deviceid;
+                    break;
                 }
         }
 
@@ -81,8 +76,8 @@ static Window create_win(Display *dpy)
 	XIEventMask mask;
 	int stylus;
 
-	Window win = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 1200,
-		800, 0, 0, WhitePixel(dpy, 0));
+	Window win = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, 500,
+		300, 0, 0, WhitePixel(dpy, 0));
 
 	stylus	= find_stylus(dpy, XIAllDevices);
 	if (stylus)
